@@ -44,7 +44,7 @@ namespace RobotArmStudio
             _api = api;
             _settings = RobotAiPlanner.LoadSettings();
             _apiKey = System.Environment.GetEnvironmentVariable("ROBOT_LLM_API_KEY") ?? "";
-            AddChat("系统", "工作空间已启动。输入任务，AI 会规划并执行受限的仿真动作。");
+            AddChat("任务", "三色分拣：把红、蓝、黄方块分别放进同色目标框。按 V 切换斜视和俯视，目视确认物体与目标位置。");
         }
 
         private void OnGUI()

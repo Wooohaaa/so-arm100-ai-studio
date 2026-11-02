@@ -27,8 +27,16 @@ namespace RobotArmStudio
             fleet.Configure(simulatedArmCount, printed, motors, accent);
 
             BuildPayload("红色方块", new Vector3(-0.16f, 0.45f, 0.31f), new Color(0.91f, 0.29f, 0.25f));
-            BuildPayload("蓝色方块", new Vector3(0.16f, 0.45f, 0.35f), new Color(0.24f, 0.52f, 0.91f));
-            BuildPayload("黄色方块", new Vector3(0.00f, 0.45f, 0.43f), new Color(0.94f, 0.69f, 0.20f));
+            BuildPayload("蓝色方块", new Vector3(-0.18f, 0.45f, 0.45f), new Color(0.24f, 0.52f, 0.91f));
+            BuildPayload("黄色方块", new Vector3(0.12f, 0.45f, 0.45f), new Color(0.94f, 0.69f, 0.20f));
+
+            Material targetBorder = MakeMaterial(new Color(0.035f, 0.055f, 0.065f));
+            BuildSortingTarget("红色目标框", new Vector3(-0.33f, 0.423f, 0.18f),
+                MakeMaterial(new Color(1.00f, 0.12f, 0.10f)), targetBorder);
+            BuildSortingTarget("蓝色目标框", new Vector3(0.30f, 0.423f, 0.38f),
+                MakeMaterial(new Color(0.10f, 0.40f, 1.00f)), targetBorder);
+            BuildSortingTarget("黄色目标框", new Vector3(0.33f, 0.423f, 0.18f),
+                MakeMaterial(new Color(1.00f, 0.78f, 0.06f)), targetBorder);
 
             var api = gameObject.AddComponent<LocalRobotApi>();
             api.StartServer(fleet, apiPort, "未连接");
@@ -96,6 +104,23 @@ namespace RobotArmStudio
             obj.GetComponent<Renderer>().material = MakeMaterial(color);
             var payload = obj.AddComponent<ManipulablePayload>();
             payload.Configure(displayName, color, new Vector3(0.06f, 0.06f, 0.06f));
+        }
+
+        private static void BuildSortingTarget(string targetName, Vector3 position, Material color, Material border)
+        {
+            CreateCube(targetName + " 底板", position, new Vector3(0.15f, 0.004f, 0.15f), border, false);
+
+            float lineY = position.y + 0.004f;
+            float edge = 0.060f;
+            float lineWidth = 0.010f;
+            CreateCube(targetName + " 左边框", new Vector3(position.x - edge, lineY, position.z),
+                new Vector3(lineWidth, 0.005f, 0.13f), color, false);
+            CreateCube(targetName + " 右边框", new Vector3(position.x + edge, lineY, position.z),
+                new Vector3(lineWidth, 0.005f, 0.13f), color, false);
+            CreateCube(targetName + " 前边框", new Vector3(position.x, lineY, position.z - edge),
+                new Vector3(0.13f, 0.005f, lineWidth), color, false);
+            CreateCube(targetName + " 后边框", new Vector3(position.x, lineY, position.z + edge),
+                new Vector3(0.13f, 0.005f, lineWidth), color, false);
         }
 
         private static void CreateCube(string objectName, Vector3 position, Vector3 size, Material material, bool collider)
