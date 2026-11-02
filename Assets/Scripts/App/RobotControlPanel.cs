@@ -18,7 +18,7 @@ namespace RobotArmStudio
         private readonly List<ChatLine> _chat = new List<ChatLine>();
         private string _apiKey = "";
         private string _instruction = "";
-        private string _notice = "仿真已就绪。右键拖动画面，滚轮缩放。";
+        private string _notice = "仿真已就绪。按 V 切换斜视/俯视，右键拖动画面，滚轮缩放。";
         private Vector2 _chatScroll;
         private Vector2 _uiScroll;
         private bool _showSettings;

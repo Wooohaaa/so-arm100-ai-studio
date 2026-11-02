@@ -11,6 +11,8 @@
 - `IRobotArmDriver` 驱动接口。当前提供 Unity 运动学仿真；SO-100 实体串口/Feetech 驱动尚未实现。
 - Windows 独立程序构建脚本。
 
+相机视角可用 **V** 在斜视与俯视间切换；也可右键拖动和滚轮缩放。测试记录见 [`docs/test-records/`](docs/test-records/README.md)。
+
 没有自动演示任务。场景中的方块仅用于自然语言抓取与移动操作。
 
 ## 打开工程

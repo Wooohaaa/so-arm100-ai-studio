@@ -8,6 +8,7 @@ namespace RobotArmStudio
         private float _yaw = 24f;
         private float _pitch = 24f;
         private float _distance = 1.75f;
+        private bool _overheadView;
 
         public void SetFocus(Transform focus)
         {
@@ -18,6 +19,12 @@ namespace RobotArmStudio
         private void LateUpdate()
         {
             if (_focus == null) return;
+            if (Input.GetKeyDown(KeyCode.V))
+            {
+                _overheadView = !_overheadView;
+                _pitch = _overheadView ? 58f : 24f;
+                _distance = _overheadView ? 2.05f : 1.75f;
+            }
             if (Input.GetMouseButton(1))
             {
                 _yaw += Input.GetAxis("Mouse X") * 3.5f;
