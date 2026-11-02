@@ -264,6 +264,18 @@ namespace RobotArmStudio
                 };
             }
 
+            var payloadStates = new List<PayloadState>();
+            foreach (var item in ManipulablePayload.Active)
+            {
+                if (item == null) continue;
+                payloadStates.Add(new PayloadState
+                {
+                    name = item.PayloadName,
+                    position = RobotSafety.ToArray(item.WorldPosition),
+                    held = item.IsHeld
+                });
+            }
+
             return new RobotStateSnapshot
             {
                 timestamp = DateTime.UtcNow.ToString("o"),
@@ -271,7 +283,8 @@ namespace RobotArmStudio
                 emergencyStop = _emergencyStop,
                 armCount = armStates.Length,
                 llmStatus = llmStatus ?? "未连接",
-                arms = armStates
+                arms = armStates,
+                payloads = payloadStates.ToArray()
             };
         }
 

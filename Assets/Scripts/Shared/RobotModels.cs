@@ -45,6 +45,7 @@ namespace RobotArmStudio
         public int armCount;
         public string llmStatus;
         public ArmState[] arms;
+        public PayloadState[] payloads;
     }
 
     [Serializable]
@@ -60,6 +61,14 @@ namespace RobotArmStudio
         public float[] jointsDeg;
         public float gripperOpen;
         public string holding;
+    }
+
+    [Serializable]
+    public sealed class PayloadState
+    {
+        public string name;
+        public float[] position;
+        public bool held;
     }
 
     [Serializable]

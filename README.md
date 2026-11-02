@@ -66,7 +66,7 @@ Invoke-RestMethod -Method Post `
 | 方法 | 路径 | 作用 |
 | --- | --- | --- |
 | GET | `/health` | API 运行状态 |
-| GET | `/api/state` | 仿真和各机械臂状态快照 |
+| GET | `/api/state` | 仿真、各机械臂状态，以及可抓取物体的位置和抓取状态 |
 | GET | `/api/calibration` | 关节名称、限位和工作空间 |
 | POST | `/api/command` | `MoveTcp`、`SetJoints`、`Gripper`、`Home`、`Stop`、`Resume` |
 | POST | `/api/control` | 全局 `pause`、`resume`、`stop` |
