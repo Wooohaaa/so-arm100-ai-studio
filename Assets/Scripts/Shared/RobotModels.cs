@@ -36,6 +36,12 @@ namespace RobotArmStudio
     }
 
     [Serializable]
+    public sealed class ApiCameraRequest
+    {
+        public string view;
+    }
+
+    [Serializable]
     public sealed class RobotStateSnapshot
     {
         public string app = "Robot Arm Studio";

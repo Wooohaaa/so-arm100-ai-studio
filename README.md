@@ -16,6 +16,8 @@
 
 后续机械臂操作测试以渲染画面作为唯一感知与结果核验来源；控制 API 只发送动作，不用 `/api/state` 或物体坐标反馈替代视觉。
 
+为缩短视觉操作流程，工程提供本地 MCP 与 Codex Skill：通常先获取一张截图，再以截图中的两个像素点调用一次批量抓取/放置。安装和使用方法见 [`mcp/so_arm100_visual/README.md`](mcp/so_arm100_visual/README.md)；Skill 源文件位于 [`skills/so-arm100-visual-control/`](skills/so-arm100-visual-control/)。
+
 没有自动演示任务。场景中的方块仅用于自然语言抓取与移动操作。
 
 ## 打开工程
@@ -75,6 +77,7 @@ Invoke-RestMethod -Method Post `
 | GET | `/api/calibration` | 关节名称、限位和工作空间 |
 | POST | `/api/command` | `MoveTcp`、`SetJoints`、`Gripper`、`Home`、`Stop`、`Resume` |
 | POST | `/api/control` | 全局 `pause`、`resume`、`stop` |
+| POST | `/api/camera` | 视觉工具选择 `oblique` 或 `overhead` 固定视角 |
 
 坐标使用 Unity 世界坐标，单位为米，Y 轴向上。当前工作空间限制为 X[-0.48,0.48]、Y[0.43,0.78]、Z[-0.35,0.55]。末端移动目标还会经过 SO-100 近似逆运动学与关节限位检查；关节目标会逐个检查限位。命令由 Unity 主线程处理。
 

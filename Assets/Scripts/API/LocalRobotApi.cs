@@ -26,6 +26,7 @@ namespace RobotArmStudio
         private HttpListener _listener;
         private Thread _serverThread;
         private RobotFleet _fleet;
+        private OrbitCameraController _camera;
         private string _stateJson = "{}";
         private string _calibrationJson = "{}";
         private string _llmStatus = "未连接";
@@ -36,9 +37,10 @@ namespace RobotArmStudio
         public string Status { get; private set; } = "未启动";
         public int Port { get; private set; } = 8765;
 
-        public void StartServer(RobotFleet fleet, int port, string llmStatus)
+        public void StartServer(RobotFleet fleet, OrbitCameraController camera, int port, string llmStatus)
         {
             _fleet = fleet;
+            _camera = camera;
             Port = Mathf.Clamp(port, 1024, 65535);
             _llmStatus = llmStatus ?? "未连接";
             RefreshSnapshots();
@@ -153,7 +155,7 @@ namespace RobotArmStudio
                 return;
             }
 
-            if (method == "POST" && (path == "/api/command" || path == "/api/control"))
+            if (method == "POST" && (path == "/api/command" || path == "/api/control" || path == "/api/camera"))
             {
                 if (IsStale(out double staleSeconds))
                 {
@@ -264,6 +266,27 @@ namespace RobotArmStudio
                     SetReply(request, 200, new ApiReply { ok = true, message = "急停已触发。" });
                 }
                 else SetReply(request, 400, new ApiReply { ok = false, error = "action 必须是 pause、resume 或 stop。" });
+                return;
+            }
+
+            if (request.Path == "/api/camera")
+            {
+                ApiCameraRequest cameraRequest;
+                try { cameraRequest = JsonUtility.FromJson<ApiCameraRequest>(request.Body); }
+                catch (Exception e)
+                {
+                    SetReply(request, 400, new ApiReply { ok = false, error = "JSON 无效：" + e.Message });
+                    return;
+                }
+
+                string reason = "相机尚未就绪。";
+                bool ok = _camera != null && cameraRequest != null && _camera.SetView(cameraRequest.view, out reason);
+                SetReply(request, ok ? 200 : 400, new ApiReply
+                {
+                    ok = ok,
+                    message = ok ? "相机视角已设置。" : null,
+                    error = ok ? null : reason
+                });
             }
         }
 

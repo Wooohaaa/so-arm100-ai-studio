@@ -9,6 +9,7 @@ namespace RobotArmStudio
         [Range(1024, 65535)] public int apiPort = 8765;
 
         private bool _built;
+        private OrbitCameraController _cameraController;
 
         private void Start()
         {
@@ -39,7 +40,7 @@ namespace RobotArmStudio
                 MakeMaterial(new Color(1.00f, 0.78f, 0.06f)), targetBorder);
 
             var api = gameObject.AddComponent<LocalRobotApi>();
-            api.StartServer(fleet, apiPort, "未连接");
+            api.StartServer(fleet, _cameraController, apiPort, "未连接");
             var panel = gameObject.AddComponent<RobotControlPanel>();
             panel.Configure(fleet, api);
         }
@@ -92,7 +93,8 @@ namespace RobotArmStudio
             camera.nearClipPlane = 0.05f;
             camera.farClipPlane = 80f;
             cameraObject.AddComponent<AudioListener>();
-            cameraObject.AddComponent<OrbitCameraController>().SetFocus(focus.transform);
+            _cameraController = cameraObject.AddComponent<OrbitCameraController>();
+            _cameraController.SetFocus(focus.transform);
         }
 
         private void BuildPayload(string displayName, Vector3 position, Color color)

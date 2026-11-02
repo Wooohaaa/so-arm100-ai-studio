@@ -1,0 +1,4 @@
+interface:
+  display_name: "SO-100 Visual Control"
+  short_description: "Use screenshots to control and verify the SO-100 simulator."
+  default_prompt: "Use the latest simulator screenshot to plan and visually verify the requested SO-100 pick-and-place task."

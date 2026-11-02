@@ -16,6 +16,33 @@ namespace RobotArmStudio
             UpdateCamera();
         }
 
+        public bool SetView(string view, out string reason)
+        {
+            if (string.Equals(view, "oblique", System.StringComparison.OrdinalIgnoreCase))
+            {
+                _overheadView = false;
+                _yaw = 24f;
+                _pitch = 24f;
+                _distance = 1.75f;
+            }
+            else if (string.Equals(view, "overhead", System.StringComparison.OrdinalIgnoreCase))
+            {
+                _overheadView = true;
+                _yaw = 24f;
+                _pitch = 58f;
+                _distance = 2.05f;
+            }
+            else
+            {
+                reason = "view 必须是 oblique 或 overhead。";
+                return false;
+            }
+
+            UpdateCamera();
+            reason = null;
+            return true;
+        }
+
         private void LateUpdate()
         {
             if (_focus == null) return;
